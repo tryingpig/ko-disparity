@@ -1,0 +1,41 @@
+name: Update sector disparity data
+
+on:
+  schedule:
+    # 평일 07:00 UTC = 16:00 KST (한국 증시 마감 15:30 후 일봉이 안정적으로 잡힌 뒤)
+    - cron: '0 7 * * 1-5'
+  workflow_dispatch:        # 수동 실행도 허용
+
+permissions:
+  contents: write           # data/*.json 커밋·푸시용
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch data & compute disparity
+        run: python scripts/update_data.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "변경 사항 없음 (휴장일 등) — 커밋 생략"
+          else
+            git commit -m "data: update sector disparity ($(date -u +%Y-%m-%d))"
+            git push
+          fi
