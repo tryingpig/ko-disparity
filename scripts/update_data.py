@@ -35,12 +35,26 @@ ZONE_WARNING_MAX = 130    # 120~130 : 경계(warning), >=130 : 과열(overheated
 
 KST = timezone(timedelta(hours=9))
 
-# 추적 대상 한국 섹터 ETF (초안: 1개, 향후 확장).
+# 추적 대상 한국 대표 섹터 ETF 16종 (섹터 로테이션 대시보드 기준).
 # yfinance 심볼은 '<종목코드>.KS'(KOSPI 상장)지만 파일명/URL용 식별자(slug)는 종목코드만 쓴다.
+# name_ko=섹터명(주 라벨), theme=대표 ETF명(부제).
 SECTORS = [
-    {"ticker": "455850.KS", "slug": "455850", "name_ko": "AI반도체 소부장",
-     "name_en": "SOL AI Semiconductor Materials & Equipment ETF",
-     "theme": "AI 반도체 소재·부품·장비"},
+    {"ticker": "395160.KS", "slug": "395160", "name_ko": "반도체",      "name_en": "Semiconductors",          "theme": "KODEX AI반도체TOP2플러스"},
+    {"ticker": "407820.KS", "slug": "407820", "name_ko": "소비재",      "name_en": "Consumer",                "theme": "에셋플러스 코리아플랫폼액티브"},
+    {"ticker": "401470.KS", "slug": "401470", "name_ko": "IT/플랫폼",   "name_en": "IT / Platform",           "theme": "KODEX 메타버스액티브"},
+    {"ticker": "373490.KS", "slug": "373490", "name_ko": "전력/에너지", "name_en": "Power / Energy",          "theme": "KODEX 코리아혁신성장액티브"},
+    {"ticker": "139250.KS", "slug": "139250", "name_ko": "화학/소재",   "name_en": "Chemicals / Materials",   "theme": "TIGER 200 에너지화학"},
+    {"ticker": "307520.KS", "slug": "307520", "name_ko": "지주사",      "name_en": "Holding Companies",       "theme": "TIGER 지주회사"},
+    {"ticker": "261140.KS", "slug": "261140", "name_ko": "국내주식",    "name_en": "Domestic Equity",         "theme": "TIGER 우선주"},
+    {"ticker": "445290.KS", "slug": "445290", "name_ko": "기계",        "name_en": "Machinery",               "theme": "KODEX 로봇액티브"},
+    {"ticker": "472720.KS", "slug": "472720", "name_ko": "금융",        "name_en": "Financials",              "theme": "TRUSTON 주주가치액티브"},
+    {"ticker": "381560.KS", "slug": "381560", "name_ko": "자동차",      "name_en": "Automobiles",             "theme": "HANARO Fn전기&수소차"},
+    {"ticker": "482030.KS", "slug": "482030", "name_ko": "2차전지",     "name_en": "Batteries",               "theme": "KoAct 반도체&2차전지핵심소재액티브"},
+    {"ticker": "139220.KS", "slug": "139220", "name_ko": "인프라",      "name_en": "Infrastructure",          "theme": "TIGER 200 건설"},
+    {"ticker": "0008T0.KS", "slug": "0008T0", "name_ko": "K-컬처",      "name_en": "K-Culture",               "theme": "SOL 화장품TOP3플러스"},
+    {"ticker": "307510.KS", "slug": "307510", "name_ko": "바이오",      "name_en": "Bio / Healthcare",        "theme": "TIGER 의료기기"},
+    {"ticker": "494670.KS", "slug": "494670", "name_ko": "조선/해운",   "name_en": "Shipbuilding / Shipping", "theme": "TIGER 조선TOP10"},
+    {"ticker": "449450.KS", "slug": "449450", "name_ko": "방산",        "name_en": "Defense",                 "theme": "PLUS K방산"},
 ]
 
 # 상단에 표시할 한국 주요 지수 2종.
@@ -69,9 +83,13 @@ def fetch_history(ticker: str, retries: int = 3) -> pd.DataFrame:
     last_err = None
     for attempt in range(1, retries + 1):
         try:
-            df = yf.Ticker(ticker).history(period=HISTORY_PERIOD, interval="1d", auto_adjust=True)
+            # auto_adjust=False: 실제 거래가 사용. (일부 ETF는 yfinance 조정종가에
+            # 음수·이상치가 섞여 이격도가 깨짐 — 예 381560. 실거래가가 증권사 표시가와도 일치)
+            df = yf.Ticker(ticker).history(period=HISTORY_PERIOD, interval="1d", auto_adjust=False)
             if df is not None and not df.empty and "Close" in df.columns:
-                return df
+                df = df[df["Close"] > 0]   # 비정상(음수·0) 종가 방어 필터
+                if not df.empty:
+                    return df
             last_err = f"빈 데이터 (시도 {attempt})"
         except Exception as e:  # noqa: BLE001
             last_err = str(e)
