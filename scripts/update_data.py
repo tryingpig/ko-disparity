@@ -55,6 +55,7 @@ SECTORS = [
     {"ticker": "307510.KS", "slug": "307510", "name_ko": "바이오",      "name_en": "Bio / Healthcare",        "theme": "TIGER 의료기기"},
     {"ticker": "494670.KS", "slug": "494670", "name_ko": "조선/해운",   "name_en": "Shipbuilding / Shipping", "theme": "TIGER 조선TOP10"},
     {"ticker": "449450.KS", "slug": "449450", "name_ko": "방산",        "name_en": "Defense",                 "theme": "PLUS K방산"},
+    {"ticker": "455850.KS", "slug": "455850", "name_ko": "AI반도체 소부장", "name_en": "AI Semiconductor Materials & Equipment", "theme": "SOL AI반도체소부장"},
 ]
 
 # 상단에 표시할 한국 주요 지수 2종.
