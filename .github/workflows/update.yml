@@ -2,7 +2,9 @@ name: Update sector disparity data
 
 on:
   schedule:
-    # 평일 07:00 UTC = 16:00 KST (한국 증시 마감 15:30 후 일봉이 안정적으로 잡힌 뒤)
+    # 장중 20분마다: 평일 00:00~06:40 UTC = 09:00~15:40 KST (한국 증시 개장~마감 직후)
+    - cron: '*/20 0-6 * * 1-5'
+    # 마감 확정: 평일 07:00 UTC = 16:00 KST (일봉 안정 후 공식 종가)
     - cron: '0 7 * * 1-5'
   workflow_dispatch:        # 수동 실행도 허용
 
