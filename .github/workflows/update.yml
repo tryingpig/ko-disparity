@@ -27,6 +27,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # Notion 'ETF Sector DB' → data/sectors.json (수집 직전 최신 config 반영)
+      - name: Sync sector config from Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python scripts/sync_from_notion.py
+
       - name: Fetch data & compute disparity
         run: python scripts/update_data.py
 
