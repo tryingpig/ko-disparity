@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-09T20:31:58+09:00",
+  "updated_at": "2026-07-10T01:18:21+09:00",
   "as_of_date": "2026-07-09",
   "ma_period": 50,
   "ma_periods": [
@@ -21,24 +21,24 @@
       "name_ko": "코스피",
       "name_en": "KOSPI Composite Index",
       "theme": "한국 종합주가지수",
-      "price": 7291.91,
-      "ma10": 7956.85,
-      "ma20": 8333.25,
-      "ma50": 7947.36,
-      "disparity": 91.75,
+      "price": 7246.79,
+      "ma10": 8120.69,
+      "ma20": 8356.85,
+      "ma50": 7931.03,
+      "disparity": 91.37,
       "zone": "cooldown",
       "market": {
         "state": "bear",
         "label": "하락장",
-        "score": -78.1,
+        "score": -82.6,
         "cross": false,
         "up10": false,
         "up20": false,
-        "spread_pct": -4.52,
-        "slope10_pct": -6.4,
-        "slope20_pct": -0.54
+        "spread_pct": -2.83,
+        "slope10_pct": -6.03,
+        "slope20_pct": -0.84
       },
-      "as_of_date": "2026-07-09"
+      "as_of_date": "2026-07-08"
     },
     {
       "ticker": "KQ11",
@@ -47,11 +47,11 @@
       "name_ko": "코스닥",
       "name_en": "KOSDAQ Composite Index",
       "theme": "코스닥 종합지수",
-      "price": 794.0,
-      "ma10": 860.99,
-      "ma20": 917.41,
-      "ma50": 1037.54,
-      "disparity": 76.53,
+      "price": 785.0,
+      "ma10": 870.37,
+      "ma20": 927.56,
+      "ma50": 1045.74,
+      "disparity": 75.07,
       "zone": "cooldown",
       "market": {
         "state": "bear",
@@ -60,11 +60,11 @@
         "cross": false,
         "up10": false,
         "up20": false,
-        "spread_pct": -6.15,
-        "slope10_pct": -5.47,
-        "slope20_pct": -3.7
+        "spread_pct": -6.17,
+        "slope10_pct": -5.82,
+        "slope20_pct": -3.56
       },
-      "as_of_date": "2026-07-09"
+      "as_of_date": "2026-07-08"
     }
   ],
   "sectors": [
